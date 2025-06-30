@@ -11,10 +11,14 @@ import {
   getOrdersApi,
   updateUserApi
 } from '@api';
-import { TIngredient, TConstructorItems, TOrder } from '@utils-types';
+import {
+  TIngredient,
+  TConstructorItems,
+  TOrder,
+  TConstructorIngredient
+} from '@utils-types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 } from 'uuid';
-import { create } from 'domain';
 
 interface IBurgerState {
   ingredients: TIngredient[];
@@ -53,23 +57,17 @@ const initialState: IBurgerState = {
 
 export const fetchIngredients = createAsyncThunk(
   'ingredients/all',
-  async () => await getIngredientsApi()
+  getIngredientsApi
 );
 
-export const fetchFeeds = createAsyncThunk(
-  'user/feeds',
-  async () => await getFeedsApi()
-);
+export const fetchFeeds = createAsyncThunk('user/feeds', getFeedsApi);
 
 export const fetchOrderBurger = createAsyncThunk(
   'orders/newOrder',
   async (data: string[]) => await orderBurgerApi(data)
 );
 
-export const fetchUserOrders = createAsyncThunk(
-  'user/orders',
-  async () => await getOrdersApi()
-);
+export const fetchUserOrders = createAsyncThunk('user/orders', getOrdersApi);
 
 export const fetchRegisterUser = createAsyncThunk(
   'user/register',
@@ -86,15 +84,9 @@ export const fetchUpdateUser = createAsyncThunk(
   async (data: TRegisterData) => await updateUserApi(data)
 );
 
-export const fetchLogoutUser = createAsyncThunk(
-  'user/logout',
-  async () => await logoutApi()
-);
+export const fetchLogoutUser = createAsyncThunk('user/logout', logoutApi);
 
-export const getUserThunk = createAsyncThunk(
-  'user/get',
-  async () => await getUserApi()
-);
+export const getUserThunk = createAsyncThunk('user/get', getUserApi);
 
 export const burgerSlice = createSlice({
   name: 'burger',
@@ -111,6 +103,10 @@ export const burgerSlice = createSlice({
       }
     },
 
+    removeIngredient(state, action: PayloadAction<{ index: number }>) {
+      state.constructorItems.ingredients.splice(action.payload.index, 1);
+    },
+
     closeModalRequest(state) {
       state.orderRequest = false;
       state.orderModalData = null;
@@ -118,6 +114,39 @@ export const burgerSlice = createSlice({
         bun: null,
         ingredients: []
       };
+    },
+
+    moveIngredientUp(state, action: PayloadAction<TConstructorIngredient>) {
+      const currentIngredientIndex =
+        state.constructorItems.ingredients.findIndex(
+          (item) => item._id === action.payload._id
+        );
+      const hihgerIngredient =
+        state.constructorItems.ingredients[currentIngredientIndex - 1];
+
+      state.constructorItems.ingredients.splice(
+        currentIngredientIndex - 1,
+        2,
+        action.payload,
+        hihgerIngredient
+      );
+    },
+
+    moveIngredientDown(state, action: PayloadAction<TConstructorIngredient>) {
+      const currentIngredientIndex =
+        state.constructorItems.ingredients.findIndex(
+          (item) => item._id === action.payload._id
+        );
+
+      const lowerIngredient =
+        state.constructorItems.ingredients[currentIngredientIndex + 1];
+
+      state.constructorItems.ingredients.splice(
+        currentIngredientIndex,
+        2,
+        lowerIngredient,
+        action.payload
+      );
     }
   },
 
@@ -265,5 +294,11 @@ export const {
   selectUserEmail
 } = burgerSlice.selectors;
 
-export const { addIngedient, closeModalRequest } = burgerSlice.actions;
+export const {
+  addIngedient,
+  removeIngredient,
+  closeModalRequest,
+  moveIngredientUp,
+  moveIngredientDown
+} = burgerSlice.actions;
 export default burgerSlice.reducer;

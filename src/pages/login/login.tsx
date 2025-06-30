@@ -4,6 +4,7 @@ import { useDispatch } from '../../services/store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchLoginUser } from '../../slices/burgerSlice';
 import { setCookie } from '../../utils/cookie';
+import { useForm } from '../../hooks/useForm';
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
@@ -11,13 +12,17 @@ export const Login: FC = () => {
   const location = useLocation();
   const { from } = location.state || { from: { pathname: '/' } };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({
+    email: '',
+    password: ''
+  });
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await dispatch(fetchLoginUser({ email, password }))
+    await dispatch(
+      fetchLoginUser({ email: values.email, password: values.password })
+    )
       .unwrap()
       .then((payload) => {
         setCookie('accessToken', payload.accessToken);
@@ -30,10 +35,10 @@ export const Login: FC = () => {
   return (
     <LoginUI
       errorText=''
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
+      email={values.email}
+      setEmail={handleChange}
+      password={values.password}
+      setPassword={handleChange}
       handleSubmit={handleSubmit}
     />
   );

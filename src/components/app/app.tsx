@@ -19,11 +19,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/index';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
-import {
-  fetchFeeds,
-  fetchIngredients,
-  fetchUserOrders
-} from '../../slices/burgerSlice';
+import { fetchFeeds, fetchIngredients } from '../../slices/burgerSlice';
 import { deleteCookie, getCookie } from '../../utils/cookie';
 import { getUserThunk, selectIsAuthorized } from '../../slices/burgerSlice';
 
@@ -97,6 +93,7 @@ const App = () => {
           >
             <Route path='/profile/orders/:number' element={<OrderInfo />} />
           </Route>
+
           <Route path='*' element={<NotFound404 />} />
         </Routes>
         {backgroundLocation && (
@@ -119,12 +116,17 @@ const App = () => {
             />
             <Route
               path='/profile/orders/:number'
-              element={
-                <Modal title='Детали заказа' onClose={handleCloseModal}>
-                  <OrderInfo />
-                </Modal>
-              }
-            />
+              element={<ProtectedRoute authorizedOnly={false} />}
+            >
+              <Route
+                path='/profile/orders/:number'
+                element={
+                  <Modal title='Детали заказа' onClose={handleCloseModal}>
+                    <OrderInfo />
+                  </Modal>
+                }
+              />
+            </Route>
           </Routes>
         )}
       </div>

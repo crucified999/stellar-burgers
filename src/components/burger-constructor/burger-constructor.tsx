@@ -1,14 +1,13 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useSelector } from 'react-redux';
 import {
   closeModalRequest,
   selectConstructorItems,
   selectOrderModalData,
   selectOrderRequest
 } from '../../slices/burgerSlice';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { selectIsAuthorized } from '../../slices/burgerSlice';
 import { fetchOrderBurger } from '../../slices/burgerSlice';
