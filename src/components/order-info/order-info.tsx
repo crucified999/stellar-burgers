@@ -1,13 +1,24 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient } from '@utils-types';
-import { useSelector } from '../../services/store';
-import { selectIngredients } from '../../slices/burgerSlice';
-import { redirect, useParams } from 'react-router-dom';
-import { selectOrders } from '../../slices/burgerSlice';
+import { TIngredient, TOrder } from '@utils-types';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  fetchFeeds,
+  fetchOrderByNumber,
+  fetchUserOrders,
+  IBurgerState,
+  selectIngredients,
+  selectOrderModalData,
+  selectOrders,
+  selectUserOrders
+} from '../../slices/burgerSlice';
+import { redirect, useLocation, useParams } from 'react-router-dom';
+import { Selector } from '@reduxjs/toolkit';
 
 export const OrderInfo: FC = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
   const params = useParams<{ number: string }>();
 
   if (!params.number) {
@@ -15,13 +26,15 @@ export const OrderInfo: FC = () => {
     return null;
   }
 
-  const orders = useSelector(selectOrders);
+  const orders =
+    location.pathname === `/feed/${params.number}`
+      ? useSelector(selectOrders)
+      : useSelector(selectUserOrders);
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
 
   const orderData = orders.find(
     (item) => item.number === parseInt(params.number!)
   );
-
-  const ingredients: TIngredient[] = useSelector(selectIngredients);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

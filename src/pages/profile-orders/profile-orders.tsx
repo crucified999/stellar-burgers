@@ -14,10 +14,6 @@ export const ProfileOrders: FC = () => {
   const orders = useSelector(selectUserOrders);
   const isLoading = useSelector(selectIsLoading);
 
-  useEffect(() => {
-    dispatch(fetchUserOrders());
-  }, []);
-
   if (isLoading) {
     return <Preloader />;
   }

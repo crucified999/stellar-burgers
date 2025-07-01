@@ -9,7 +9,8 @@ import {
   logoutApi,
   getUserApi,
   getOrdersApi,
-  updateUserApi
+  updateUserApi,
+  getOrderByNumberApi
 } from '@api';
 import {
   TIngredient,
@@ -20,7 +21,7 @@ import {
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 } from 'uuid';
 
-interface IBurgerState {
+export interface IBurgerState {
   ingredients: TIngredient[];
   constructorItems: TConstructorItems;
   isLoading: boolean;
@@ -65,6 +66,15 @@ export const fetchFeeds = createAsyncThunk('user/feeds', getFeedsApi);
 export const fetchOrderBurger = createAsyncThunk(
   'orders/newOrder',
   async (data: string[]) => await orderBurgerApi(data)
+);
+
+export const fetchOrderByNumber = createAsyncThunk(
+  'order/orderByNumber',
+  async (number: number) => {
+    const response = await getOrderByNumberApi(number);
+
+    return response.orders[0];
+  }
 );
 
 export const fetchUserOrders = createAsyncThunk('user/orders', getOrdersApi);
@@ -258,6 +268,17 @@ export const burgerSlice = createSlice({
         state.email = action.payload.user.email;
       })
       .addCase(fetchUpdateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchOrderByNumber.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orderModalData = action.payload;
+      })
+      .addCase(fetchOrderByNumber.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

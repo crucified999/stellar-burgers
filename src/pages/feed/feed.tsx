@@ -19,9 +19,9 @@ export const Feed: FC = () => {
 
   const getFeeds = () => dispatch(fetchFeeds());
 
-  useEffect(() => {
-    getFeeds();
-  }, []);
+  // useEffect(() => {
+  //   getFeeds();
+  // }, []);
 
   if (isLoading) {
     return <Preloader />;

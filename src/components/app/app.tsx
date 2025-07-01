@@ -19,7 +19,11 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/index';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
-import { fetchFeeds, fetchIngredients } from '../../slices/burgerSlice';
+import {
+  fetchFeeds,
+  fetchIngredients,
+  fetchUserOrders
+} from '../../slices/burgerSlice';
 import { deleteCookie, getCookie } from '../../utils/cookie';
 import { getUserThunk, selectIsAuthorized } from '../../slices/burgerSlice';
 
@@ -38,10 +42,11 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchIngredients());
     dispatch(fetchFeeds());
+    dispatch(fetchUserOrders());
     if (!isAuthorized && token) {
       dispatch(getUserThunk())
         .unwrap()
-        .catch((e) => {
+        .catch(() => {
           deleteCookie('accessToken');
           localStorage.removeItem('refreshToken');
         });
