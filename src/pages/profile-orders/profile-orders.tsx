@@ -12,9 +12,12 @@ import { Preloader } from '@ui';
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
   const orders = useSelector(selectUserOrders);
-  const isLoading = useSelector(selectIsLoading);
 
-  if (isLoading) {
+  useEffect(() => {
+    dispatch(fetchUserOrders());
+  }, []);
+
+  if (!orders) {
     return <Preloader />;
   }
 

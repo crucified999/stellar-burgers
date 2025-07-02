@@ -20,9 +20,8 @@ import { ProtectedRoute } from '../protected-route/index';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import {
-  fetchFeeds,
   fetchIngredients,
-  fetchUserOrders
+  resetOrderModalData
 } from '../../slices/burgerSlice';
 import { deleteCookie, getCookie } from '../../utils/cookie';
 import { getUserThunk, selectIsAuthorized } from '../../slices/burgerSlice';
@@ -35,14 +34,15 @@ const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
 
+  console.log(backgroundLocation);
+
   const handleCloseModal = () => {
     navigate(-1);
+    dispatch(resetOrderModalData());
   };
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    dispatch(fetchFeeds());
-    dispatch(fetchUserOrders());
     if (!isAuthorized && token) {
       dispatch(getUserThunk())
         .unwrap()

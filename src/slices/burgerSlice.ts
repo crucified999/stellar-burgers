@@ -126,6 +126,10 @@ export const burgerSlice = createSlice({
       };
     },
 
+    resetOrderModalData(state) {
+      state.orderModalData = null;
+    },
+
     moveIngredientUp(state, action: PayloadAction<TConstructorIngredient>) {
       const currentIngredientIndex =
         state.constructorItems.ingredients.findIndex(
@@ -320,6 +324,7 @@ export const {
   removeIngredient,
   closeModalRequest,
   moveIngredientUp,
-  moveIngredientDown
+  moveIngredientDown,
+  resetOrderModalData
 } = burgerSlice.actions;
 export default burgerSlice.reducer;

@@ -15,15 +15,14 @@ export const Feed: FC = () => {
   const dispatch = useDispatch();
   /** TODO: взять переменную из стора */
   const orders: TOrder[] = useSelector(selectOrders);
-  const isLoading = useSelector(selectIsLoading);
 
   const getFeeds = () => dispatch(fetchFeeds());
 
-  // useEffect(() => {
-  //   getFeeds();
-  // }, []);
+  useEffect(() => {
+    getFeeds();
+  }, []);
 
-  if (isLoading) {
+  if (!orders) {
     return <Preloader />;
   }
 

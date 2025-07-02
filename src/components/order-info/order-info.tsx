@@ -13,28 +13,33 @@ import {
   selectOrders,
   selectUserOrders
 } from '../../slices/burgerSlice';
-import { redirect, useLocation, useParams } from 'react-router-dom';
-import { Selector } from '@reduxjs/toolkit';
+import { useLocation, useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const params = useParams<{ number: string }>();
+  const { number } = useParams<{ number: string }>();
 
-  if (!params.number) {
-    redirect('/feed');
-    return null;
-  }
+  // if (!params.number) {
+  //   redirect('/feed');
+  //   return null;
+  // }
 
-  const orders =
-    location.pathname === `/feed/${params.number}`
-      ? useSelector(selectOrders)
-      : useSelector(selectUserOrders);
+  // const orders =
+  //   location.pathname === `/feed/${params.number}`
+  //     ? useSelector(selectOrders)
+  //     : useSelector(selectUserOrders);
   const ingredients: TIngredient[] = useSelector(selectIngredients);
 
-  const orderData = orders.find(
-    (item) => item.number === parseInt(params.number!)
-  );
+  // const orderData = orders.find(
+  //   (item) => item.number === parseInt(params.number!)
+  // );
+
+  const orderData = useSelector(selectOrderModalData);
+
+  useEffect(() => {
+    dispatch(fetchOrderByNumber(Number(number)));
+  }, []);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
