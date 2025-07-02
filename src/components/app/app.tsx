@@ -34,8 +34,6 @@ const App = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.background;
 
-  console.log(backgroundLocation);
-
   const handleCloseModal = () => {
     navigate(-1);
     dispatch(resetOrderModalData());
