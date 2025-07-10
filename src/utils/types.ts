@@ -1,3 +1,6 @@
+import { Selector } from '@reduxjs/toolkit';
+import { IBurgerState } from 'src/slices/burgerSlice';
+
 export type TIngredient = {
   _id: string;
   name: string;
@@ -14,6 +17,11 @@ export type TIngredient = {
 
 export type TConstructorIngredient = TIngredient & {
   id: string;
+};
+
+export type TConstructorItems = {
+  bun: Partial<TIngredient> | null;
+  ingredients: TConstructorIngredient[];
 };
 
 export type TOrder = {
