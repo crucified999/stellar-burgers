@@ -18,13 +18,21 @@ const config = {
   // clearMocks: false,
 
   // Indicates whether the coverage information should be collected while executing the test
-  // collectCoverage: false,
+  collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  // collectCoverageFrom: undefined,
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/*.stories.{js,jsx,ts,tsx}',
+    '!src/**/*.test.{js,jsx,ts,tsx}',
+    '!src/**/*.spec.{js,jsx,ts,tsx}',
+    '!src/index.tsx',
+    '!src/stories/**'
+  ],
 
   // The directory where Jest should output its coverage files
-  // coverageDirectory: undefined,
+  coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -32,15 +40,15 @@ const config = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
+  coverageReporters: [
+    'text',
+    'text-summary',
+    'html',
+    'lcov'
+  ],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: undefined,
@@ -91,7 +99,16 @@ const config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    '^@pages(.*)$': '<rootDir>/src/pages$1',
+    '^@components(.*)$': '<rootDir>/src/components$1',
+    '^@ui(.*)$': '<rootDir>/src/components/ui$1',
+    '^@ui-pages(.*)$': '<rootDir>/src/components/ui/pages$1',
+    '^@utils-types$': '<rootDir>/src/utils/types',
+    '^@api$': '<rootDir>/src/utils/burger-api.ts',
+    '^@slices(.*)$': '<rootDir>/src/slices$1',
+    '^@selectors(.*)$': '<rootDir>/src/services/selectors$1'
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -147,7 +164,7 @@ const config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  testEnvironment: 'jsdom'
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
