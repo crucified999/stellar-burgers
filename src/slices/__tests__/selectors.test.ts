@@ -3,7 +3,6 @@ import { mockBun, mockMain, mockConstructorIngredient } from '../mockData';
 
 describe('Селекторы burgerSlice', () => {
   it('Должны правильно экспортироваться', () => {
-
     expect(burgerSlice.selectors).toBeDefined();
     expect(burgerSlice.selectors.selectIngredients).toBeDefined();
     expect(burgerSlice.selectors.selectIsLoading).toBeDefined();
@@ -20,7 +19,6 @@ describe('Селекторы burgerSlice', () => {
   });
 
   it('Должны правильно работать с состоянием', () => {
-
     const testState = {
       burger: {
         ingredients: [mockBun, mockMain],
@@ -52,7 +50,7 @@ describe('Селекторы burgerSlice', () => {
       bun: mockBun,
       ingredients: [mockConstructorIngredient]
     });
-    
+
     expect(burgerSlice.selectors.selectOrderModalData(testState)).toBeNull();
     expect(burgerSlice.selectors.selectOrderRequest(testState)).toBe(false);
     expect(burgerSlice.selectors.selectOrders(testState)).toEqual([]);

@@ -1,5 +1,10 @@
 import { burgerSlice, IBurgerState } from '../burgerSlice';
-import { mockBun, mockMain, mockSauce, mockConstructorIngredient } from '../mockData';
+import {
+  mockBun,
+  mockMain,
+  mockSauce,
+  mockConstructorIngredient
+} from '../mockData';
 
 describe('Редьюсеры burgerSlice', () => {
   let initialState: IBurgerState;
@@ -26,9 +31,7 @@ describe('Редьюсеры burgerSlice', () => {
   });
 
   describe('addIngedient', () => {
-
     it('Добавление булки в конструктор', () => {
-
       const action = { type: 'burger/addIngedient', payload: mockBun };
       const newState = burgerSlice.reducer(initialState, action);
 
@@ -36,8 +39,7 @@ describe('Редьюсеры burgerSlice', () => {
       expect(newState.constructorItems.ingredients).toHaveLength(0);
     });
 
-    it('Добавление ингредиента в список начинки', () => {
-
+    it('Добавление ингредиента в конструктор', () => {
       const action = { type: 'burger/addIngedient', payload: mockMain };
       const newState = burgerSlice.reducer(initialState, action);
 
@@ -50,7 +52,6 @@ describe('Редьюсеры burgerSlice', () => {
     });
 
     it('Замена булки при добавлении новой булки', () => {
-
       const stateWithBun = {
         ...initialState,
         constructorItems: {
@@ -68,7 +69,6 @@ describe('Редьюсеры burgerSlice', () => {
   });
 
   describe('removeIngredient', () => {
-
     it('Удалить ингредиент по индексу', () => {
       const stateWithIngredients = {
         ...initialState,
@@ -92,9 +92,7 @@ describe('Редьюсеры burgerSlice', () => {
   });
 
   describe('moveIngredientUp', () => {
-
     it('Перемещение ингредиента вверх', () => {
-
       const stateWithIngredients = {
         ...initialState,
         constructorItems: {
@@ -124,9 +122,7 @@ describe('Редьюсеры burgerSlice', () => {
   });
 
   describe('moveIngredientDown', () => {
-
     it('Перемещение ингредиента вниз', () => {
-
       const stateWithIngredients = {
         ...initialState,
         constructorItems: {
@@ -156,9 +152,7 @@ describe('Редьюсеры burgerSlice', () => {
   });
 
   describe('closeModalRequest', () => {
-
     it('Сброс состояния модального окна заказа', () => {
-
       const stateWithOrder = {
         ...initialState,
         orderRequest: true,
@@ -187,9 +181,7 @@ describe('Редьюсеры burgerSlice', () => {
   });
 
   describe('resetOrderModalData', () => {
-
     it('Сброс данных модального окна заказа', () => {
-
       const stateWithOrder = {
         ...initialState,
         orderModalData: {
@@ -205,7 +197,7 @@ describe('Редьюсеры burgerSlice', () => {
 
       const action = { type: 'burger/resetOrderModalData' };
       const newState = burgerSlice.reducer(stateWithOrder, action);
-      
+
       expect(newState.orderModalData).toBeNull();
     });
   });
